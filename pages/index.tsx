@@ -11,12 +11,12 @@ export default function Home({ posts }: any) {
     let submitForm = async (e: any) => {
         setLoading(true);
         e.preventDefault();
-        let res = await fetch("http://localhost:3000/api/posts", {
+        let res = await fetch("/api/posts", {
             method: "POST",
             body: JSON.stringify({
                 title: 'My trip to Serbia',
                 content: 'It was very cool trip for me. I opened many new interesting places',
-                id: 1
+                id: 2
             }),
         });
         res = await res.json();
@@ -48,7 +48,11 @@ export default function Home({ posts }: any) {
 }
 
 export async function getServerSideProps() {
-    const response = await axios.get('http://localhost:3000/api/posts');
+    let dev = process.env.NODE_ENV !== 'production';
+    let { DEV_URL, PROD_URL } = process.env;
+
+
+    const response = await axios.get(`${dev ? DEV_URL : PROD_URL}/api/posts`);
     const posts = response.data;
 
     return {
