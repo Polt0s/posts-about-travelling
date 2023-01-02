@@ -35,8 +35,8 @@ export default function Home({ posts }: any) {
                 <button style={{ margin: '1rem 0' }} onClick={submitForm}>Create post</button>
 
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                    {posts.map((post: any) => (
-                        <span key={post.id} style={{ display: 'flex', flexDirection: 'column', gap: 5, border: '1px solid green', padding: '1rem', marginBottom: '1rem' }}>
+                    {posts.map((post: any, index: string) => (
+                        <span key={index} style={{ display: 'flex', flexDirection: 'column', gap: 5, border: '1px solid green', padding: '1rem', marginBottom: '1rem' }}>
                             <h1>{post.title}</h1>
                             <p>{post.description}</p>
                         </span>
