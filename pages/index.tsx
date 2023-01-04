@@ -5,7 +5,7 @@ import { ShortPost } from 'components';
 
 import { getAllPosts } from './api/ApiService';
 
-import type { GetStaticProps } from 'next/types';
+import type { GetServerSideProps } from 'next/types';
 import type { IPost } from 'types/Post';
 
 interface IHome {
@@ -40,7 +40,7 @@ export default function Home({ posts }: IHome) {
     );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
     const response = await getAllPosts();
 
     return {
