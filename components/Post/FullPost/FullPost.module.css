@@ -1,0 +1,14 @@
+.Container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.FullPost {
+    background-color: #FFFFFF;
+}
+
+.FullPost__content {
+    width: 40rem;
+    margin: 0 auto;
+}
