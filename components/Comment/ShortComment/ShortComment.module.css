@@ -1,0 +1,50 @@
+.ShortComment {
+    margin: 1rem 0;
+}
+
+.ShortComment__header {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.ShortComment__content {
+    font-size: 1.2rem;
+}
+
+.Info {
+    gap: 1rem;
+}
+
+.Info__image {
+    border-radius: 50%;
+}
+
+.Navigation-buttons {
+    margin-top: 0.5rem;
+    gap: 1rem;
+}
+
+.Dropdown {
+    background-color: #FFFFFF;
+    width: 9rem;
+    height: 5.5rem;
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+    box-shadow: 4px 3px 9px -2px rgba(117,117,117,0.75);
+}
+
+.Dropdown__item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.Dropdown > .Dropdown__item:hover {
+    background-color: rgba(0,0,0,0.05);;
+}
+
+.Dropdown__navigation {
+    cursor: pointer;
+}

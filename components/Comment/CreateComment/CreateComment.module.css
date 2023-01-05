@@ -1,0 +1,22 @@
+.Comment-block {
+    background-color: #f7f7f7;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid transparent;
+    margin-bottom: 2rem;
+}
+
+.Comment-block:hover {
+    background-color: #fff;
+    border: 1px solid #bdd6fa;
+    box-shadow: 0 0 0 3px rgb(70 131 217 / 12%);
+}
+
+.Comment-block:active {
+    border: 1px solid #4683d9;
+    background-color: #fff;
+}
+
+.Comment-block__button {
+    margin-top: 0.5rem;
+}
