@@ -1,6 +1,6 @@
 import { axiosBase } from './config';
 
-import type { IPost } from 'types/Post';
+import type { IComment, IPost } from 'types';
 import type { OutputData } from '@editorjs/editorjs';
 
 type CreatePostDto = {
@@ -52,5 +52,48 @@ export const removePost = async (id: string) => {
         return response.data;
     } catch (error) {
         throw new Error(`Failed remove post ${error}`);
+    }
+};
+
+type CreateCommentDto = {
+    text: string;
+    postId?: string;
+}
+
+export const createCommentApi = async (data: CreateCommentDto) => {
+    try {
+        const response = await axiosBase.post<void>('/api/comments/createComment', data);
+
+        return response.data;
+    } catch (error) {
+        throw new Error(`Failed create comment ${error}`);
+    }
+};
+
+export const getAllComments = async (postId: string) => {
+    try {
+        const response = await axiosBase.get<IComment[]>(`/api/comments/getAllComments?id=${postId}`);
+
+        return response.data;
+    } catch (error) {
+        throw new Error(`Failed create comment ${error}`);
+    }
+};
+
+export const updateCommentApi = async (data: CreateCommentDto, id: string) => {
+    try {
+        const response = await axiosBase.put<void>(`/api/comments/updateComment?id=${id}`, data);
+        return response.data;
+    } catch (error) {
+        throw new Error(`Failed update comment ${error}`);
+    }
+};
+
+export const removeComment = async (id: string) => {
+    try {
+        const response = await axiosBase.delete<void>(`/api/comments/removeComment?id=${id}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(`Failed remove comment ${error}`);
     }
 };
