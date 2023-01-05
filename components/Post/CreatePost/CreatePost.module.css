@@ -1,3 +1,7 @@
+.Text-position {
+  width: 100%;
+}
+
 .Editor {
   font-size: 18px;
   height: 38rem;
@@ -9,6 +13,7 @@
   position: relative;
 }
 
-
-  
-  
+.Editor__title > input {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}

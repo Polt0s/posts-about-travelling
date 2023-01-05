@@ -4,11 +4,17 @@
     gap: 3rem;
 }
 
-.FullPost {
+.FullPost-blocks {
     background-color: #FFFFFF;
+    padding: 2rem 0;
+    border-radius: 1rem;
 }
 
-.FullPost__content {
+.FullPost-blocks__content {
     width: 40rem;
     margin: 0 auto;
+}
+
+.Text-content {
+    font-size: 1.5rem;
 }

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Input, Modal, Typography } from 'antd';
+import {
+    Button,
+    Input,
+    Modal,
+    Typography
+} from 'antd';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
@@ -20,9 +25,9 @@ interface ICreatePost {
 
 export const CreatePost = ({ data, tag, onClick }: ICreatePost): JSX.Element => {
     const router = useRouter();
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [title, setTitle] = React.useState(data?.title || '');
-    const [blocks, setBlocks] = React.useState(data?.body || []);
+    const [isLoading, setIsLoading] = useState(false);
+    const [title, setTitle] = useState(data?.title || '');
+    const [blocks, setBlocks] = useState(data?.body || []);
     const [openModal, setOpenModal] = useState(false);
 
     const onAddPost = async (event: any) => {
@@ -36,10 +41,12 @@ export const CreatePost = ({ data, tag, onClick }: ICreatePost): JSX.Element => 
             };
             if (!data) {
                 const post = await createPost(dataPost);
+                setOpenModal(false);
                 // await router.push(`/post/${post._id}`);
             } else {
                 await updatePostApi(dataPost, data._id);
                 setOpenModal(false);
+
             }
         } catch (error) {
             console.warn('create post', error);
@@ -61,7 +68,9 @@ export const CreatePost = ({ data, tag, onClick }: ICreatePost): JSX.Element => 
                     Create post
                 </Button>
             ) : (
-                <Typography.Text style={{ width: '100%' }} onClick={() => setOpenModal(true)}>Update</Typography.Text>
+                <Typography.Text className={styles['Text-position']} onClick={() => setOpenModal(true)}>
+                    Update
+                </Typography.Text>
             )}
             <Modal
                 centered
@@ -69,6 +78,7 @@ export const CreatePost = ({ data, tag, onClick }: ICreatePost): JSX.Element => 
                 onOk={() => setOpenModal(false)}
                 onCancel={() => setOpenModal(false)}
                 width={1000}
+                bodyStyle={{ overflowX: 'scroll' }}
                 footer={[
                     <Button
                         type="default"
@@ -95,7 +105,6 @@ export const CreatePost = ({ data, tag, onClick }: ICreatePost): JSX.Element => 
                             value={title}
                             placeholder="Header"
                             bordered={false}
-                            style={{ marginBottom: '1rem', fontSize: '1.5rem' }}
                             size="large"
                             onChange={(event) => setTitle(event.target.value)}
                         />

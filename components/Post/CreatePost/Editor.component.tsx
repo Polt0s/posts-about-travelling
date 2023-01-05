@@ -6,7 +6,7 @@ interface IEditor {
     initialBlocks: OutputData['blocks'];
 }
 
-export const Editor: React.FC<IEditor> = ({ onChange, initialBlocks }) => {
+export const Editor: React.FC<IEditor> = ({ onChange, initialBlocks }): JSX.Element => {
     const holder = useId();
 
     React.useEffect(() => {

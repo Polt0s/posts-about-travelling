@@ -1,11 +1,18 @@
 import { useState } from 'react';
-import { Card, Dropdown, Typography } from 'antd';
+import {
+    Badge,
+    Card,
+    Dropdown,
+    Typography
+} from 'antd';
 import Link from 'next/link';
 
-import { DeletePost } from '../DeletePost';
+import { removePost } from 'pages/api/ApiService';
+import { ModalDelete } from 'components/ModalDelete';
+
 import { CreatePost } from '../CreatePost';
 
-import styles from './Post.module.css';
+import styles from './ShortPost.module.css';
 
 import type { IPost } from 'types';
 
@@ -22,21 +29,25 @@ export const ShortPost = ({
     return (
         <Card bordered className={styles['Post']}>
             <div className={styles['Post-navigation']}>
-                <Text>Author</Text>
+                <Badge.Ribbon text="Travel" color="purple" />
 
                 <Dropdown
                     placement="bottomRight"
                     trigger={['click']}
                     onOpenChange={() => setOpen(!open)}
                     open={open}
-                    dropdownRender={(menu) => (
+                    dropdownRender={() => (
                         <div className={styles['Dropdown']}>
                             <div className={styles['Dropdown__item']} onClick={() => setOpen(false)}>
                                 <CreatePost tag="update" data={{ title, body, _id }} />
                             </div>
 
                             <div className={styles['Dropdown__item']} onClick={() => setOpen(false)}>
-                                <DeletePost id={_id} />
+                                <ModalDelete
+                                    id={_id}
+                                    content="Are you sure you want to delete the post?"
+                                    func={removePost}
+                                />
                             </div>
                         </div>
                     )}
