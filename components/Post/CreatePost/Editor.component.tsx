@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useId } from 'react';
 import EditorJS, { OutputData } from '@editorjs/editorjs';
 
-interface EditorProps {
+interface IEditor {
     onChange: (blocks: OutputData['blocks']) => void;
     initialBlocks: OutputData['blocks'];
 }
 
-export const Editor: React.FC<EditorProps> = ({ onChange, initialBlocks }) => {
+export const Editor: React.FC<IEditor> = ({ onChange, initialBlocks }) => {
+    const holder = useId();
+
     React.useEffect(() => {
         const editor = new EditorJS({
-            holder: 'editor',
+            holder,
             data: {
                 blocks: initialBlocks
             },
@@ -27,7 +29,7 @@ export const Editor: React.FC<EditorProps> = ({ onChange, initialBlocks }) => {
                 })
                 .catch((e) => console.error('ERROR editor cleanup', e));
         };
-    }, [initialBlocks, onChange]);
+    }, []);
 
-    return <div id="editor" />;
+    return <div id={holder} />;
 };

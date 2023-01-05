@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
-    "@editorjs/editorjs": "^2.22.2",
+    "@editorjs/editorjs": "^2.26.4",
     "antd": "^5.1.2",
     "axios": "^0.27.2",
     "mongodb": "^3.5.9",
