@@ -1,5 +1,4 @@
 import clientPromise from 'lib/mongodb';
-import { ObjectId } from 'mongodb';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -12,8 +11,12 @@ export default async function removePost(req: NextApiRequest, res: NextApiRespon
         const post = await db
             .collection('posts')
             .deleteOne({
-                '_id': ObjectId(id)
+                'id': id
             });
+
+        await db.collection('comments').deleteOne({
+            'postId': id
+        });
 
         return res.json(post);
     } catch (error) {

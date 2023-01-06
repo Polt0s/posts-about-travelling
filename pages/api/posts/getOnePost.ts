@@ -1,5 +1,4 @@
 import clientPromise from 'lib/mongodb';
-import { ObjectId } from 'mongodb';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -12,7 +11,7 @@ export default async function getOnePost(req: NextApiRequest, res: NextApiRespon
         const post = await db
             .collection('posts')
             .findOne({
-                '_id': ObjectId(id)
+                'id': id
             });
 
         return res.json(post);

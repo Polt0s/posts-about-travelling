@@ -5,15 +5,23 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 export default async function createComment(req: NextApiRequest, res: NextApiResponse) {
     const client = await clientPromise;
     const db = client.db('posts-about-travelling');
-    const { text, postId } = req.body;
+    const { text, postId, id, createdAt } = req.body;
 
     try {
-        const comment = await db
+        await db
             .collection('comments')
             .insertOne({
                 text,
                 postId,
+                id,
+                createdAt,
                 user: 'anonymous'
+            });
+
+        const comment = await db
+            .collection('comments')
+            .findOne({
+                'id': id
             });
 
         return res.json(comment);

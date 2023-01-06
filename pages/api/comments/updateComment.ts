@@ -1,5 +1,4 @@
 import clientPromise from 'lib/mongodb';
-import { ObjectId } from 'mongodb';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -7,21 +6,28 @@ export default async function updateComment(req: NextApiRequest, res: NextApiRes
     const client = await clientPromise;
     const db = client.db('posts-about-travelling');
     const { id } = req.query;
-    const { text } = req.body;
+    const { text, createdAt } = req.body;
 
     try {
-        const comment = await db
+        await db
             .collection('comments')
             .updateOne(
                 {
-                    '_id': ObjectId(id)
+                    id: id
                 },
                 {
                     $set: {
-                        text
+                        text,
+                        createdAt
                     }
                 }
             );
+
+        const comment = await db
+            .collection('comments')
+            .findOne({
+                'id': id
+            });
 
         return res.json(comment);
     } catch (error) {

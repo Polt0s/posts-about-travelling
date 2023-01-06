@@ -1,5 +1,4 @@
 import clientPromise from 'lib/mongodb';
-import { ObjectId } from 'mongodb';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -10,11 +9,11 @@ export default async function updatePost(req: NextApiRequest, res: NextApiRespon
     const { title, body, description, imageUrl } = req.body;
 
     try {
-        const post = await db
+        await db
             .collection('posts')
             .updateOne(
                 {
-                    '_id': ObjectId(id)
+                    'id': id
                 },
                 {
                     $set: {
@@ -26,7 +25,13 @@ export default async function updatePost(req: NextApiRequest, res: NextApiRespon
                 }
             );
 
-        return res.json(post);
+        const getPost = await db
+            .collection('posts')
+            .findOne({
+                'id': id
+            });
+
+        return res.json(getPost);
     } catch (error) {
         res.status(500).json({
             message: 'Failed update post'

@@ -1,5 +1,4 @@
 import clientPromise from 'lib/mongodb';
-import { ObjectId } from 'mongodb';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -12,7 +11,7 @@ export default async function removeComment(req: NextApiRequest, res: NextApiRes
         const comment = await db
             .collection('comments')
             .deleteOne({
-                '_id': ObjectId(id)
+                id: id
             });
 
         return res.json(comment);
