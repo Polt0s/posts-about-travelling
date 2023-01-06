@@ -1,18 +1,27 @@
+import { useEffect } from 'react';
 import Head from 'next/head';
 import { Row, Space } from 'antd';
 
 import { ShortPost } from 'components';
+import { usePostStore } from 'store';
 
-import { getAllPosts } from './api/ApiService';
+import { getAllPostsApi } from './api/ApiService';
 
-import type { GetServerSideProps } from 'next/types';
-import type { IPost } from 'types/Post';
+import type { IPost } from 'types';
 
 interface IHome {
     posts: IPost[];
 }
 
 export default function Home({ posts }: IHome) {
+    const { getAllPosts, postList } = usePostStore((state) => state);
+
+    useEffect(() => {
+        if (posts) {
+            getAllPosts(posts);
+        }
+    }, [getAllPosts, posts]);
+
     return (
         <>
             <Head>
@@ -24,10 +33,10 @@ export default function Home({ posts }: IHome) {
 
             <Row justify="center">
                 <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-                    {posts.map((post) => (
+                    {postList.map((post) => (
                         <ShortPost
-                            key={post._id}
-                            _id={post._id}
+                            key={post.id}
+                            id={post.id}
                             title={post.title}
                             description={post.description}
                             imageUrl={post.imageUrl}
@@ -40,10 +49,8 @@ export default function Home({ posts }: IHome) {
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    const response = await getAllPosts();
+Home.getInitialProps = async () => {
+    const response = await getAllPostsApi();
 
-    return {
-        props: { posts: response },
-    };
+    return { posts: response };
 };

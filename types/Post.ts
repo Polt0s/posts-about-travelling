@@ -1,7 +1,7 @@
 import { OutputData } from '@editorjs/editorjs';
 
 export interface IPost {
-    _id: string;
+    id: string;
     title: string;
     description?: string;
     imageUrl?: string;
