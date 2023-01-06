@@ -7,9 +7,9 @@ import {
     Typography
 } from 'antd';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
+import { v4 as uuidV4 } from 'uuid';
 
-import { createPost, updatePostApi } from 'pages/api/ApiService';
+import { usePostStore } from 'store';
 
 import styles from './CreatePost.module.css';
 
@@ -19,39 +19,41 @@ const EditorJs = dynamic(() => import('./Editor.component').then((res) => res.Ed
 
 interface ICreatePost {
     data?: IPost;
-    onClick?: () => void;
     tag: 'create' | 'update';
 }
 
-export const CreatePost = ({ data, tag, onClick }: ICreatePost): JSX.Element => {
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
-    const [title, setTitle] = useState(data?.title || '');
-    const [blocks, setBlocks] = useState(data?.body || []);
+export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
+    const [statePost, setStatePost] = useState({
+        title: data?.title || '',
+        description: data?.description || '',
+        blocks: data?.body || [],
+    });
     const [openModal, setOpenModal] = useState(false);
+
+    const { fetchUpdatePost, fetchAddNewPost } = usePostStore((state) => state);
 
     const onAddPost = async (event: any) => {
         event.preventDefault();
 
-        try {
-            setIsLoading(true);
-            const dataPost = {
-                title,
-                body: blocks,
-            };
-            if (!data) {
-                const post = await createPost(dataPost);
-                setOpenModal(false);
-                // await router.push(`/post/${post._id}`);
-            } else {
-                await updatePostApi(dataPost, data._id);
-                setOpenModal(false);
+        const dataPost = {
+            title: statePost.title,
+            description: statePost.description,
+            body: statePost.blocks,
+        };
 
-            }
-        } catch (error) {
-            console.warn('create post', error);
-        } finally {
-            setIsLoading(false);
+        if (!data) {
+            fetchAddNewPost({
+                ...dataPost,
+                id: uuidV4()
+            });
+            setStatePost(({ title: '', description: '', blocks: [] }));
+            setOpenModal(false);
+        } else {
+            fetchUpdatePost({
+                ...dataPost,
+                id: data.id
+            }, data.id);
+            setOpenModal(false);
         }
     };
 
@@ -93,26 +95,36 @@ export const CreatePost = ({ data, tag, onClick }: ICreatePost): JSX.Element => 
                         key="submit"
                         onClick={onAddPost}
                         size="large"
-                        disabled={isLoading || !blocks.length || !title}
+                        disabled={!statePost.blocks || !statePost.title}
                     >
                         {!data ? 'Publish' : 'Save'}
                     </Button>
                 ]}
             >
                 <div className={styles['Editor']}>
-                    <div className={styles['Editor__title']}>
+                    <div className={styles['Editor__header']}>
                         <Input
-                            value={title}
+                            value={statePost.title}
                             placeholder="Header"
                             bordered={false}
                             size="large"
-                            onChange={(event) => setTitle(event.target.value)}
+                            onChange={(event) => setStatePost(prev => ({ ...prev, title: event.target.value }))}
+                        />
+
+                        <Input.TextArea
+                            rows={2}
+                            maxLength={120}
+                            value={statePost.description}
+                            placeholder="Short description no more than 120 characters"
+                            bordered={false}
+                            size="large"
+                            onChange={(event) => setStatePost(prev => ({ ...prev, description: event.target.value }))}
                         />
                     </div>
 
                     <EditorJs
                         initialBlocks={data?.body || []}
-                        onChange={(array) => setBlocks(array)}
+                        onChange={(array) => setStatePost(prev => ({ ...prev, blocks: array }))}
                     />
                 </div>
             </Modal>

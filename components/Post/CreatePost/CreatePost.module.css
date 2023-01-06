@@ -7,13 +7,17 @@
   height: 38rem;
 }
 
-.Editor__title {
+.Editor__header {
   max-width: 42rem;
   margin: 0 auto;
   position: relative;
 }
 
-.Editor__title > input {
+.Editor__header > input {
   margin-bottom: 1rem;
   font-size: 1.5rem;
+}
+
+.Editor__header > textarea {
+  font-size: 1.125rem;
 }

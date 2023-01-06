@@ -7,8 +7,8 @@ import {
 } from 'antd';
 import Link from 'next/link';
 
-import { removePost } from 'pages/api/ApiService';
 import { ModalDelete } from 'components/ModalDelete';
+import { usePostStore } from 'store';
 
 import { CreatePost } from '../CreatePost';
 
@@ -17,7 +17,7 @@ import styles from './ShortPost.module.css';
 import type { IPost } from 'types';
 
 export const ShortPost = ({
-    _id,
+    id,
     title,
     description,
     body,
@@ -25,6 +25,7 @@ export const ShortPost = ({
 }: IPost): JSX.Element => {
     const { Title, Text } = Typography;
     const [open, setOpen] = useState(false);
+    const { fetchRemovePost } = usePostStore((state) => state);
 
     return (
         <Card bordered className={styles['Post']}>
@@ -39,14 +40,14 @@ export const ShortPost = ({
                     dropdownRender={() => (
                         <div className={styles['Dropdown']}>
                             <div className={styles['Dropdown__item']} onClick={() => setOpen(false)}>
-                                <CreatePost tag="update" data={{ title, body, _id }} />
+                                <CreatePost tag="update" data={{ title, description, body, id }} />
                             </div>
 
                             <div className={styles['Dropdown__item']} onClick={() => setOpen(false)}>
                                 <ModalDelete
-                                    id={_id}
+                                    id={id}
                                     content="Are you sure you want to delete the post?"
-                                    func={removePost}
+                                    func={fetchRemovePost}
                                 />
                             </div>
                         </div>
@@ -56,10 +57,13 @@ export const ShortPost = ({
                 </Dropdown>
             </div>
 
-            <Link href={`/post/${_id}`}>
+            <Link href={`/post/${id}`}>
                 <Title level={3}>{title}</Title>
             </Link>
-            <Text>{description}</Text>
+
+            <Text className={styles['Post__description']}>
+                {description}
+            </Text>
         </Card>
     );
 };

@@ -10,23 +10,24 @@ import {
 } from 'antd';
 
 import avatarTest from 'public/testAvatar.png';
-import { removeComment, updateCommentApi } from 'pages/api/ApiService';
 import { ModalDelete } from 'components/ModalDelete';
+import { useCommentStore } from 'store';
 
 import styles from './ShortComment.module.css';
 
 import type { IComment } from 'types';
 
 export const ShortComment = ({
-    avatarUrl,
     user,
     text,
     createdAt,
-    _id
+    id
 }: IComment): JSX.Element => {
     const [open, setOpen] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [dataText, setDataText] = useState<string>(text);
+
+    const { fetchRemoveComment, fetchUpdateComment } = useCommentStore((state) => state);
 
     const handleEditComment = () => {
         setIsEdit(true);
@@ -34,7 +35,7 @@ export const ShortComment = ({
     };
 
     const onUpdateComment = async () => {
-        await updateCommentApi({ text: dataText }, _id);
+        fetchUpdateComment({ text: dataText, id }, id);
         setIsEdit(false);
     };
 
@@ -46,7 +47,7 @@ export const ShortComment = ({
                         width={40}
                         height={40}
                         src={avatarTest}
-                        alt={user}
+                        alt={user || ''}
                         className={styles['Info__image']}
                     />
 
@@ -57,7 +58,7 @@ export const ShortComment = ({
                             </Typography.Title>
                         </Row>
                         <Row>
-                            <span>12.10.2022</span>
+                            <span>{createdAt}</span>
                         </Row>
                     </Col>
                 </Row>
@@ -75,9 +76,9 @@ export const ShortComment = ({
 
                             <div className={styles['Dropdown__item']} onClick={() => setOpen(false)}>
                                 <ModalDelete
-                                    id={_id}
+                                    id={id}
                                     content="Are you sure you want to delete the comment?"
-                                    func={removeComment}
+                                    func={fetchRemoveComment}
                                 />
                             </div>
                         </div>
@@ -124,7 +125,6 @@ export const ShortComment = ({
                     </Typography.Text>
                 )}
             </div>
-
         </div>
     );
 };

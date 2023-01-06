@@ -4,20 +4,15 @@ import { ShortComment, CreateComment } from 'components/Comment';
 
 import styles from './FullPost.module.css';
 
-import type { OutputData } from '@editorjs/editorjs';
-import type { IComment } from 'types';
+import type { IComment, IPost } from 'types';
 
 interface IFullPost {
-    title: string;
-    blocks: OutputData['blocks'];
-    id: string;
+    post: IPost;
     comments: IComment[];
 }
 
 export const FullPost = ({
-    title,
-    blocks,
-    id,
+    post,
     comments
 }: IFullPost): JSX.Element => {
     const { Title, Text } = Typography;
@@ -27,11 +22,15 @@ export const FullPost = ({
             <Row justify="start" className={styles['FullPost-blocks']}>
                 <div className={styles['FullPost-blocks__content']}>
                     <Title level={1}>
-                        {title}
+                        {post.title}
                     </Title>
 
+                    <Text className={styles['Text-content']}>
+                        {post.description}
+                    </Text>
+
                     <div>
-                        {blocks && blocks.map((block) => (
+                        {post.body && post.body.map((block) => (
                             <Text className={styles['Text-content']} key={block.id}>
                                 {block.data.text}
                             </Text>
@@ -44,14 +43,15 @@ export const FullPost = ({
                 <div className={styles['FullPost-blocks__content']}>
                     <Title level={3}>{comments.length} comments</Title>
 
-                    <CreateComment postId={id} />
+                    <CreateComment postId={post.id} />
 
                     {comments.map((item) => (
                         <ShortComment
-                            key={item._id}
+                            id={item.id}
+                            key={item.id}
                             user={item.user}
                             text={item.text}
-                            _id={item._id}
+                            createdAt={item.createdAt}
                         />
                     ))}
                 </div>

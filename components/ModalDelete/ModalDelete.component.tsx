@@ -10,7 +10,7 @@ import styles from './ModalDelete.module.css';
 
 interface IDeletePost {
     id: string;
-    func: (id: string) => Promise<void>;
+    func: (id: string) => void;
     content: string;
 }
 
@@ -18,7 +18,7 @@ export const ModalDelete = ({ id, func, content }: IDeletePost): JSX.Element => 
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     const onDeletePost = async () => {
-        await func(id);
+        func(id);
         setOpenModal(false);
     };
 

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Input, Row } from 'antd';
+import { v4 as uuidV4 } from 'uuid';
 
-import { createCommentApi } from 'pages/api/ApiService';
+import { useCommentStore } from 'store';
 
 import styles from './CreateComment.module.css';
 
@@ -12,8 +13,15 @@ interface ICreateComment {
 export const CreateComment = ({ postId }: ICreateComment): JSX.Element => {
     const [text, setText] = useState('');
 
+    const { fetchAddNewComment } = useCommentStore((state) => state);
+
     const onSubmitComment = async () => {
-        await createCommentApi({ text, postId });
+        fetchAddNewComment({
+            text,
+            id: uuidV4(),
+            postId,
+            createdAt: new Date().toLocaleDateString('en-US'),
+        });
         setText('');
     };
 

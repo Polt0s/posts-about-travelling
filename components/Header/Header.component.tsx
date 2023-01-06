@@ -4,8 +4,9 @@ import { CreatePost } from '../Post';
 
 import styles from './Header.module.css';
 
-export const Header = () => {
+export const Header = (): JSX.Element => {
     const router = useRouter();
+
     return (
         <header className={styles['Header']}>
             {router.asPath === '/' && (
