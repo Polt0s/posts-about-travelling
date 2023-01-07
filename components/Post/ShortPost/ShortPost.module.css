@@ -1,5 +1,7 @@
 .Post {
     min-width: 40rem;
+    margin-bottom: 1rem;
+    padding: 0;
 }
 
 .Post-navigation {
@@ -14,10 +16,11 @@
 
 .Post__description {
     font-size: 1.125rem;
+    margin-bottom: 1rem;
 }
 
 .Dropdown {
-    background-color: #FFFFFF;
+    background-color: var(--main-white);
     width: 9rem;
     height: 5.5rem;
     padding: 0.3rem;

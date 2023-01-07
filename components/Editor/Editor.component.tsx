@@ -1,12 +1,17 @@
 import React, { useId } from 'react';
-import EditorJS, { OutputData } from '@editorjs/editorjs';
+import EditorJS from '@editorjs/editorjs';
+
+import styles from './Editor.module.css';
+
+import type { OutputData } from '@editorjs/editorjs';
 
 interface IEditor {
     onChange: (blocks: OutputData['blocks']) => void;
     initialBlocks: OutputData['blocks'];
+    readOnly: boolean;
 }
 
-export const Editor: React.FC<IEditor> = ({ onChange, initialBlocks }): JSX.Element => {
+export const Editor: React.FC<IEditor> = ({ onChange, initialBlocks, readOnly }): JSX.Element => {
     const holder = useId();
 
     React.useEffect(() => {
@@ -15,6 +20,8 @@ export const Editor: React.FC<IEditor> = ({ onChange, initialBlocks }): JSX.Elem
             data: {
                 blocks: initialBlocks
             },
+            minHeight: 0,
+            readOnly,
             placeholder: 'Enter text your post',
             async onChange() {
                 const { blocks } = await editor.save();
@@ -31,5 +38,5 @@ export const Editor: React.FC<IEditor> = ({ onChange, initialBlocks }): JSX.Elem
         };
     }, []);
 
-    return <div id={holder} />;
+    return <div id={holder} className={styles['Editor']} />;
 };

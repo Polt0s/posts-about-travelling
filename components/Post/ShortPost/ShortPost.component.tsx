@@ -3,7 +3,9 @@ import {
     Badge,
     Card,
     Dropdown,
-    Typography
+    Typography,
+    Image,
+    Row
 } from 'antd';
 import Link from 'next/link';
 
@@ -61,9 +63,19 @@ export const ShortPost = ({
                 <Title level={3}>{title}</Title>
             </Link>
 
-            <Text className={styles['Post__description']}>
-                {description}
-            </Text>
+            <Row>
+                <Text className={styles['Post__description']}>
+                    {description}
+                </Text>
+            </Row>
+
+            <Image
+                width="100%"
+                height="22rem"
+                preview={false}
+                src={String(imageUrl)}
+                alt="test1"
+            />
         </Card>
     );
 };

@@ -17,7 +17,7 @@ interface IDeletePost {
 export const ModalDelete = ({ id, func, content }: IDeletePost): JSX.Element => {
     const [openModal, setOpenModal] = useState<boolean>(false);
 
-    const onDeletePost = async () => {
+    const onDeletePost = () => {
         func(id);
         setOpenModal(false);
     };

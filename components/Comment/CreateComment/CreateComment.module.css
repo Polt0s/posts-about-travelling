@@ -7,14 +7,14 @@
 }
 
 .Comment-block:hover {
-    background-color: #fff;
+    background-color: var(--main-white);
     border: 1px solid #bdd6fa;
     box-shadow: 0 0 0 3px rgb(70 131 217 / 12%);
 }
 
 .Comment-block:active {
     border: 1px solid #4683d9;
-    background-color: #fff;
+    background-color: var(--main-white);
 }
 
 .Comment-block__button {

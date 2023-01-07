@@ -25,7 +25,7 @@
 }
 
 .Dropdown {
-    background-color: #FFFFFF;
+    background-color: var(--main-white);
     width: 9rem;
     height: 5.5rem;
     padding: 0.3rem;
