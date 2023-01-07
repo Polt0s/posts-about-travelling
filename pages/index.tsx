@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import Head from 'next/head';
-import { Row, Space } from 'antd';
+import { Row, Skeleton, Space } from 'antd';
 
 import { ShortPost } from 'components';
 import { usePostStore } from 'store';
-
-import { getAllPostsApi } from './api/ApiService';
+import { postsAPI } from 'apiService';
 
 import type { IPost } from 'types';
 
@@ -50,7 +49,7 @@ export default function Home({ posts }: IHome) {
 }
 
 Home.getInitialProps = async () => {
-    const response = await getAllPostsApi();
+    const { data } = await postsAPI.getAllPosts();
 
-    return { posts: response };
+    return { posts: data };
 };

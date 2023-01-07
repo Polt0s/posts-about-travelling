@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { FullPost } from 'components';
-import { getAllCommentsApi, getOnePostApi } from 'pages/api/ApiService';
+import { commentsAPI, postsAPI } from 'apiService';
 import { useCommentStore } from 'store';
 
 import type { GetServerSideProps } from 'next/types';
@@ -34,11 +34,11 @@ const FullPostPage = ({ post, comments }: IFullPostPage) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const id = ctx?.params?.id;
 
-    const response = await getOnePostApi(String(id));
-    const getComments = await getAllCommentsApi(String(id));
+    const { data: post } = await postsAPI.getOnePost(String(id));
+    const { data: comments } = await commentsAPI.getAllComments(String(id));
 
     return {
-        props: { post: response, comments: getComments },
+        props: { post, comments },
     };
 };
 
