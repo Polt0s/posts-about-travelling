@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { CreatePost } from '../Post';
@@ -9,6 +10,9 @@ export const Header = (): JSX.Element => {
 
     return (
         <header className={styles['Header']}>
+            <Link href="/" className={styles['Header__logo']}>
+                P-A-T
+            </Link>
             {router.asPath === '/' && (
                 <CreatePost tag="create" />
             )}

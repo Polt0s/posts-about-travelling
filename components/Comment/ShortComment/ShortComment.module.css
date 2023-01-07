@@ -48,3 +48,7 @@
 .Dropdown__navigation {
     cursor: pointer;
 }
+
+.Skeleton {
+    min-height: 6rem;
+}
