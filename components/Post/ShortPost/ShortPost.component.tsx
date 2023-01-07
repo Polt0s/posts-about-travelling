@@ -42,7 +42,7 @@ export const ShortPost = ({
                     dropdownRender={() => (
                         <div className={styles['Dropdown']}>
                             <div className={styles['Dropdown__item']} onClick={() => setOpen(false)}>
-                                <CreatePost tag="update" data={{ title, description, body, id }} />
+                                <CreatePost tag="update" data={{ title, description, body, id, imageUrl }} />
                             </div>
 
                             <div className={styles['Dropdown__item']} onClick={() => setOpen(false)}>

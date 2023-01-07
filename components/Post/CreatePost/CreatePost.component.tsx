@@ -57,7 +57,8 @@ export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
         } else {
             fetchUpdatePost({
                 ...dataPost,
-                id: data.id
+                id: data.id,
+                imageUrl: data.imageUrl
             }, data.id);
             setOpenModal(false);
         }
@@ -139,7 +140,6 @@ export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
                     />
                 </div>
             </Modal>
-
         </>
     );
 };

@@ -6,7 +6,7 @@ import {
     Upload
 } from 'antd';
 
-import { convertToBase64 } from './helper';
+import { convertToBase64 } from './UploadImage.helper';
 
 import styles from './UploadImage.module.css';
 

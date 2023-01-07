@@ -1,11 +1,14 @@
 import {
     Row,
     Typography,
-    Image
+    Image,
+    Breadcrumb
 } from 'antd';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 import { ShortComment, CreateComment } from 'components/Comment';
+import { cutString } from 'utils';
 
 import styles from './FullPost.module.css';
 
@@ -25,55 +28,66 @@ export const FullPost = ({
     const { Title, Text } = Typography;
 
     return (
-        <div className={styles['Container']}>
-            <Row justify="start" className={styles['FullPost-blocks']}>
-                <div className={styles['FullPost-blocks__content']}>
-                    <Title level={1}>
-                        {post.title}
-                    </Title>
+        <>
+            <Breadcrumb className={styles['Navigation']}>
+                <Breadcrumb.Item>
+                    <Link href="/">Main</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>
+                    {cutString(post.title, 0, 20)}
+                </Breadcrumb.Item>
+            </Breadcrumb>
 
-                    <Text className={styles['Text-content']}>
-                        {post.description}
-                    </Text>
+            <div className={styles['Container']}>
+                <Row justify="start" className={styles['FullPost-blocks']}>
+                    <div className={styles['FullPost-blocks__content']}>
+                        <Title level={1}>
+                            {post.title}
+                        </Title>
 
-                    <Row className={styles['Image-block']}>
-                        <Image
-                            width="100%"
-                            height="22rem"
-                            preview={false}
-                            src={String(post.imageUrl)}
-                            alt="test1"
+                        <Text className={styles['Text-content']}>
+                            {post.description}
+                        </Text>
 
-                        />
-                    </Row>
+                        <Row className={styles['Image-block']}>
+                            <Image
+                                width="100%"
+                                height="22rem"
+                                preview={false}
+                                src={String(post.imageUrl)}
+                                alt="test1"
 
-                    <div className={styles['Text-content']}>
-                        <EditorJs
-                            initialBlocks={post.body || []}
-                            onChange={() => console.log}
-                            readOnly={true}
-                        />
+                            />
+                        </Row>
+
+                        <div className={styles['Text-content']}>
+                            <EditorJs
+                                initialBlocks={post.body || []}
+                                onChange={() => console.log}
+                                readOnly={true}
+                            />
+                        </div>
                     </div>
-                </div>
-            </Row>
+                </Row>
 
-            <Row justify="start" className={styles['FullPost-blocks']}>
-                <div className={styles['FullPost-blocks__content']}>
-                    <Title level={3}>{comments.length} comments</Title>
+                <Row justify="start" className={styles['FullPost-blocks']}>
+                    <div className={styles['FullPost-blocks__content']}>
+                        <Title level={3}>{comments.length} comments</Title>
 
-                    <CreateComment postId={post.id} />
+                        <CreateComment postId={post.id} />
 
-                    {comments.map((item) => (
-                        <ShortComment
-                            id={item.id}
-                            key={item.id}
-                            user={item.user}
-                            text={item.text}
-                            createdAt={item.createdAt}
-                        />
-                    ))}
-                </div>
-            </Row>
-        </div>
+                        {comments.map((item) => (
+                            <ShortComment
+                                id={item.id}
+                                key={item.id}
+                                user={item.user}
+                                text={item.text}
+                                createdAt={item.createdAt}
+                            />
+                        ))}
+                    </div>
+                </Row>
+            </div>
+        </>
     );
 };
