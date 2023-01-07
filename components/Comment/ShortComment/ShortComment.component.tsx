@@ -40,7 +40,7 @@ export const ShortComment = ({
     };
 
     const onUpdateComment = async () => {
-        fetchUpdateComment({ text: dataText, id }, id);
+        fetchUpdateComment({ text: dataText, id, createdAt }, id);
         setIsEdit(false);
     };
 

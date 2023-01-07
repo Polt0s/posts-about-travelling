@@ -7,7 +7,7 @@ In this application can be create different posts about travel and tourism.
 TypeScript, React, Next.js, Ant-design, Zustand, mongodb
 
 ## Run project
-`npm`</br>
+`npm i`</br>
 `npm run dev`
 
 ## Project structure
