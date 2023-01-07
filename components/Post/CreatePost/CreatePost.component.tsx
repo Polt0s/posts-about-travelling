@@ -4,6 +4,7 @@ import {
     Button,
     Input,
     Modal,
+    Row,
     Typography
 } from 'antd';
 import dynamic from 'next/dynamic';
@@ -11,11 +12,14 @@ import { v4 as uuidV4 } from 'uuid';
 
 import { usePostStore } from 'store';
 
+import { UploadImage } from 'components/UploadImage';
+
 import styles from './CreatePost.module.css';
 
 import type { IPost } from 'types';
+import type { UploadFile } from 'antd';
 
-const EditorJs = dynamic(() => import('./Editor.component').then((res) => res.Editor), { ssr: false });
+const EditorJs = dynamic(() => import('components/Editor').then((res) => res.Editor), { ssr: false });
 
 interface ICreatePost {
     data?: IPost;
@@ -29,10 +33,11 @@ export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
         blocks: data?.body || [],
     });
     const [openModal, setOpenModal] = useState(false);
+    const [file, setFile] = useState<UploadFile>();
 
     const { fetchUpdatePost, fetchAddNewPost } = usePostStore((state) => state);
 
-    const onAddPost = async (event: any) => {
+    const onAddPost = (event: React.ChangeEvent<EventTarget>) => {
         event.preventDefault();
 
         const dataPost = {
@@ -44,7 +49,8 @@ export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
         if (!data) {
             fetchAddNewPost({
                 ...dataPost,
-                id: uuidV4()
+                id: uuidV4(),
+                imageUrl: file,
             });
             setStatePost(({ title: '', description: '', blocks: [] }));
             setOpenModal(false);
@@ -58,7 +64,6 @@ export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
     };
 
     return (
-
         <>
             {tag === 'create' ? (
                 <Button
@@ -70,7 +75,7 @@ export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
                     Create post
                 </Button>
             ) : (
-                <Typography.Text className={styles['Text-position']} onClick={() => setOpenModal(true)}>
+                <Typography.Text onClick={() => setOpenModal(true)} className={styles['Text-position']}>
                     Update
                 </Typography.Text>
             )}
@@ -82,23 +87,28 @@ export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
                 width={1000}
                 bodyStyle={{ overflowX: 'scroll' }}
                 footer={[
-                    <Button
-                        type="default"
-                        key="back"
-                        onClick={() => setOpenModal(false)}
-                        size="large"
-                    >
-                        Cancel
-                    </Button>,
-                    <Button
-                        type="primary"
-                        key="submit"
-                        onClick={onAddPost}
-                        size="large"
-                        disabled={!statePost.blocks || !statePost.title}
-                    >
-                        {!data ? 'Publish' : 'Save'}
-                    </Button>
+                    <div key="upload" className={styles['Modal-footer']}>
+                        {tag === 'create' && <UploadImage setFile={setFile} />}
+                        <Row justify="end">
+                            <Button
+                                type="default"
+                                key="back"
+                                onClick={() => setOpenModal(false)}
+                                size="large"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="primary"
+                                key="submit"
+                                onClick={onAddPost}
+                                size="large"
+                                disabled={(!statePost.blocks.length || !statePost.title)}
+                            >
+                                {!data ? 'Publish' : 'Save'}
+                            </Button>
+                        </Row>
+                    </div>
                 ]}
             >
                 <div className={styles['Editor']}>
@@ -112,11 +122,11 @@ export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
                         />
 
                         <Input.TextArea
-                            rows={2}
-                            maxLength={120}
+                            maxLength={200}
                             value={statePost.description}
                             placeholder="Short description no more than 120 characters"
                             bordered={false}
+                            autoSize={{ minRows: 2, maxRows: 3 }}
                             size="large"
                             onChange={(event) => setStatePost(prev => ({ ...prev, description: event.target.value }))}
                         />
@@ -125,6 +135,7 @@ export const CreatePost = ({ data, tag }: ICreatePost): JSX.Element => {
                     <EditorJs
                         initialBlocks={data?.body || []}
                         onChange={(array) => setStatePost(prev => ({ ...prev, blocks: array }))}
+                        readOnly={false}
                     />
                 </div>
             </Modal>

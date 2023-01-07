@@ -1,4 +1,9 @@
-import { Row, Typography } from 'antd';
+import {
+    Row,
+    Typography,
+    Image
+} from 'antd';
+import dynamic from 'next/dynamic';
 
 import { ShortComment, CreateComment } from 'components/Comment';
 
@@ -10,6 +15,8 @@ interface IFullPost {
     post: IPost;
     comments: IComment[];
 }
+
+const EditorJs = dynamic(() => import('components/Editor').then((res) => res.Editor), { ssr: false });
 
 export const FullPost = ({
     post,
@@ -29,12 +36,23 @@ export const FullPost = ({
                         {post.description}
                     </Text>
 
-                    <div>
-                        {post.body && post.body.map((block) => (
-                            <Text className={styles['Text-content']} key={block.id}>
-                                {block.data.text}
-                            </Text>
-                        ))}
+                    <Row className={styles['Image-block']}>
+                        <Image
+                            width="100%"
+                            height="22rem"
+                            preview={false}
+                            src={String(post.imageUrl)}
+                            alt="test1"
+
+                        />
+                    </Row>
+
+                    <div className={styles['Text-content']}>
+                        <EditorJs
+                            initialBlocks={post.body || []}
+                            onChange={() => console.log}
+                            readOnly={true}
+                        />
                     </div>
                 </div>
             </Row>

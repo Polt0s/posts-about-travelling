@@ -32,7 +32,7 @@ export default function Home({ posts }: IHome) {
             </Head>
 
             <Row justify="center">
-                <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+                <Space direction="vertical" className="Post-container">
                     {postList.map((post) => (
                         <ShortPost
                             key={post.id}

@@ -5,7 +5,7 @@
 }
 
 .FullPost-blocks {
-    background-color: #FFFFFF;
+    background-color: var(--main-white);
     padding: 2rem 0;
     border-radius: 1rem;
 }
@@ -17,4 +17,8 @@
 
 .Text-content {
     font-size: 1.5rem;
+}
+
+.Image-block {
+    margin: 1rem 0;
 }

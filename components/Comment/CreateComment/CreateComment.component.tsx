@@ -15,7 +15,7 @@ export const CreateComment = ({ postId }: ICreateComment): JSX.Element => {
 
     const { fetchAddNewComment } = useCommentStore((state) => state);
 
-    const onSubmitComment = async () => {
+    const onSubmitComment = () => {
         fetchAddNewComment({
             text,
             id: uuidV4(),

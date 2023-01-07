@@ -5,7 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 export default async function createPost(req: NextApiRequest, res: NextApiResponse) {
     const client = await clientPromise;
     const db = client.db('posts-about-travelling');
-    const { title, description, body, id } = req.body;
+    const { title, description, body, id, imageUrl } = req.body;
 
     try {
         await db
@@ -14,7 +14,8 @@ export default async function createPost(req: NextApiRequest, res: NextApiRespon
                 id,
                 title,
                 description,
-                body
+                body,
+                imageUrl
             });
 
         const getPost = await db
